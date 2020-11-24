@@ -69,25 +69,6 @@ function getMessages() {
 }
 
 //end flash
-
-
-
-function getURL($path) {
-    if (substr($path, 0, 1) == "/") {
-        return $path;
-    }
-    return $_SERVER["CONTEXT_PREFIX"] . "/IT202011/Project/$path";
-}
-
-function getBalance() {
-    if (is_logged_in() && isset($_SESSION["user"]["balance"])) {
-        return $_SESSION["user"]["balance"];
-    }
-    return 0;
-}
-
-	return -1;//-1 will be invalid
-}
 ?>
 
 
