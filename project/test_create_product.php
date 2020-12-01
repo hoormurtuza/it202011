@@ -9,7 +9,10 @@ if (!has_role("Admin")) {
 
 <form method="POST">
 	<label>Name</label>
+HW-ProjectTablesP1
+	<input name="name" placeholder="Name"/>
 	<input name="name"/>
+AdminTable
 	<label>Quantity</label>
 	<input type="int" min="1" name="quantity"/>
 	<label>Price</label>
