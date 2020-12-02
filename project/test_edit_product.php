@@ -25,8 +25,8 @@ if(isset($_POST["save"])){
 	$user = get_user_id();
 	$db = getDB();
 	if(isset($id)){
-		$stmt = $db->prepare("UPDATE Products set name=:name, quantity=:quantity, price=:br, description=:min, modified=:max, created=:nst where id=:id");
-		//$stmt = $db->prepare("INSERT INTO Products (name, quantity, price, description, modified, created, user_id) VALUES(:name, :quantity, :br, :min,:max,:nst,:user)");
+		$stmt = $db->prepare("UPDATE F20_Products set name=:name, quantity=:quantity, price=:br, description=:min, modified=:max, created=:nst where id=:id");
+		//$stmt = $db->prepare("INSERT INTO F20_Products (name, quantity, price, description, modified, created, user_id) VALUES(:name, :quantity, :br, :min,:max,:nst,:user)");
 		$r = $stmt->execute([
 			":name"=>$name,
 			":quantity"=>$quantity,
@@ -55,7 +55,7 @@ $result = [];
 if(isset($id)){
 	$id = $_GET["id"];
 	$db = getDB();
-	$stmt = $db->prepare("SELECT * FROM Products where id = :id");
+	$stmt = $db->prepare("SELECT * FROM F20_Products where id = :id");
 	$r = $stmt->execute([":id"=>$id]);
 	$result = $stmt->fetch(PDO::FETCH_ASSOC);
 }

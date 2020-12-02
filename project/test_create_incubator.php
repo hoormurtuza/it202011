@@ -10,11 +10,11 @@ if (!has_role("Admin")) {
     <form method="POST">
         <label>Name</label>
         <input name="name" placeholder="Name"/>
-        <label>Base Rate</label>
-        <input type="number" min="1" name="base_rate"/>
-        <label>Mod Min</label>
-        <input type="number" min="1" name="mod_min"/>
-        <label>Mod Max</label>
+        <label>Quantity</label>
+        <input type="number" name="base_rate"/>
+        <label>Price</label>
+        <input type="integer" name="mod_min"/>
+        <label>Created</label>
         <input type="number" min="1" name="mod_max"/>
         <input type="submit" name="save" value="Create"/>
     </form>
@@ -23,12 +23,12 @@ if (!has_role("Admin")) {
 if (isset($_POST["save"])) {
     //TODO add proper validation/checks
     $name = $_POST["name"];
-    $br = $_POST["base_rate"];
-    $min = $_POST["mod_min"];
-    $max = $_POST["mod_max"];
+    $br = $_POST["quantity"];
+    $min = $_POST["price"];
+    $max = $_POST["created"];
     $user = get_user_id();
     $db = getDB();
-    $stmt = $db->prepare("INSERT INTO F20_Incubators (name, base_rate, mod_min, mod_max, user_id) VALUES(:name, :br, :min,:max,:user)");
+    $stmt = $db->prepare("INSERT INTO Cart (name, quantity, price, created, user_id) VALUES(:name, :br, :min,:max,:user)");
     $r = $stmt->execute([
         ":name" => $name,
         ":br" => $br,

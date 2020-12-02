@@ -17,8 +17,8 @@ if (isset($_GET["id"])) {
 $result = [];
 if (isset($id)) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT Products.id, name, quantity, price, description, modified, user_id, Users.username FROM Products JOIN Users on Products.user_id = Users.id where Products.id = :id");
-    $r = $stmt->execute([":id" => $id]);
+    $stmt = $db->prepare("SELECT id, name, quantity, price, description, modified, created from F20_Products");
+    $r = $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$result) {
         $e = $stmt->errorInfo();
@@ -34,10 +34,10 @@ if (isset($id)) {
         <div class="card-body">
             <div>
                 <p>Stats</p>
-                <div>Price <?php safer_echo($result["price"]); ?></div>
-                <div>Description <?php safer_echo($result["description"]); ?> - <?php safer_echo($result["modified"]); ?></div>
-                <div>Quantity <?php safer_echo($result["quantity"]); ?></div>
-                <div>Owned by: <?php safer_echo($result["username"]); ?></div>
+                <div>Price: <?php safer_echo($result["price"]); ?></div>
+                <div>Description: <?php safer_echo($result["description"]); ?> - <?php safer_echo($result["modified"]); ?></div>
+                <div>Quantity: <?php safer_echo($result["quantity"]); ?></div>
+
             </div>
         </div>
     </div>

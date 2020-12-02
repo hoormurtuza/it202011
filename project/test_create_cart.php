@@ -12,8 +12,7 @@ if (!has_role("Admin")) {
         <input type="int" name="product_id"/>
 	<label>Quantity</label>
         <input type="number" min="1" name="quantity"/>
-        <label>Price</label>
-        <input type="number" name="price"/>
+
 
         <input type="submit" name="save" value="Create"/>
     </form>
@@ -21,17 +20,15 @@ if (!has_role("Admin")) {
 <?php
 if (isset($_POST["save"])) {
     //TODO add proper validation/checks
-    $product_id = $_POST["product_id"];
+    $product_id = ("SELECT Products.name FROM Products JOIN Cart on F20_Products.id = Cart.product_id WHERE Cart.user_id = :id");
     $quantity = $_POST["quantity"];
-    $price = $_POST["price"];
-    $user = get_user_id();
+
     $db = getDB();
-    $stmt = $db->prepare("INSERT INTO Cart (product_id, quantity, user_id, price) VALUES(:name, :quantity, :price,:user_id)");
+    $stmt = $db->prepare("INSERT INTO Cart (product_id, quantity) VALUES(:name, :quantity)");
     $r = $stmt->execute([
         ":product_id" => $product_id,
         ":quantity" => $quantity,
-	":user_id" => $user_id,
-        ":price" => $price
+
         
     ]);
     if ($r) {

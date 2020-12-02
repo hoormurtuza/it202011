@@ -1,6 +1,6 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 <?php
-if (!has_role("Admin")) {
+if (!has_role("Admin" or "user")) {
     //this will redirect to login and kill the rest of this script (prevent it from executing)
     flash("You don't have permission to access this page");
     die(header("Location: login.php"));
@@ -14,7 +14,7 @@ if (isset($_POST["query"])) {
 }
 if (isset($_POST["search"]) && !empty($query)) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT id, name, quantity, price, description, modified, created, user_id from Products WHERE name like :q LIMIT 10");
+    $stmt = $db->prepare("SELECT id, name, quantity, price, description, modified, created from F20_Products WHERE name like :q LIMIT 10");
     $r = $stmt->execute([":q" => "%$query%"]);
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -45,10 +45,7 @@ if (isset($_POST["search"]) && !empty($query)) {
                         <div>Price:</div>
                         <div><?php safer_echo($r["price"]); ?></div>
                     </div>
-                    <div>
-                        <div>Owner Id:</div>
-                        <div><?php safer_echo($r["user_id"]); ?></div>
-                    </div>
+
                     <div>
                         <a type="button" href="test_edit_product.php?id=<?php safer_echo($r['id']); ?>">Edit</a>
                         <a type="button" href="test_view_product.php?id=<?php safer_echo($r['id']); ?>">View</a>

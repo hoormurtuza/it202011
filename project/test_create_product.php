@@ -28,9 +28,9 @@ if(isset($_POST["save"])){
 	$min = $_POST["description"];
 	$max = date('Y-m-d H:i:s');
 	$nst = date('Y-m-d H:i:s');//calc
-	$user = get_user_id();
+
 	$db = getDB();
-	$stmt = $db->prepare("INSERT INTO Products (name, quantity, price, description, modified, created, user_id) VALUES(:name, :quantity, :br, :min, :max, :nst,:user)");
+	$stmt = $db->prepare("INSERT INTO F20_Products (name, quantity, price, description, modified, created) VALUES(:name, :quantity, :br, :min, :max, :nst)");
 	$r = $stmt->execute([
 		":name"=>$name,
 		":quantity"=>$quantity,
@@ -38,7 +38,7 @@ if(isset($_POST["save"])){
 		":min"=>$min,
 		"max"=>$max,
 		":nst"=>$nst,
-		":user"=>$user
+
 	]);
 	if($r){
 		flash("Created successfully with id: " . $db->lastInsertId());
