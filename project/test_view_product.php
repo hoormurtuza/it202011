@@ -17,8 +17,8 @@ if (isset($_GET["id"])) {
 $result = [];
 if (isset($id)) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT id, name, quantity, price, description, modified, created from F20_Products");
-    $r = $stmt->execute();
+    $stmt = $db->prepare("SELECT Products.name, Products.description, Products.quantity, Products.price, Products.modified, Ratings.rating, Ratings.comment FROM Products JOIN Ratings on Products.id = Ratings.product_id WHERE Products.id = :id");
+    $r = $stmt->execute([":id"=>$id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$result) {
         $e = $stmt->errorInfo();
@@ -34,9 +34,13 @@ if (isset($id)) {
         <div class="card-body">
             <div>
                 <p>Stats</p>
-                <div>Price: <?php safer_echo($result["price"]); ?></div>
-                <div>Description: <?php safer_echo($result["description"]); ?> - <?php safer_echo($result["modified"]); ?></div>
-                <div>Quantity: <?php safer_echo($result["quantity"]); ?></div>
+		<div>Description: <?php safer_echo($result["description"]); ?>
+		<div>Quantity: <?php safer_echo($result["quantity"]); ?></div>
+		<div>Price: <?php safer_echo($result["price"]); ?></div>
+                 - <?php safer_echo($result["modified"]); ?></div>
+
+	        <div>Rating: <?php safer_echo($result["rating"]); ?></div>
+		<div>Comment: <?php safer_echo($result["comment"]); ?></div>
 
             </div>
         </div>

@@ -89,6 +89,17 @@ if (isset($_POST["saved"])) {
                 }
             }
         }
+        $userID = get_user_id();
+        $stmt = $db->prepare("SELECT account_type from Users WHERE id = :id LIMIT 1");
+        $stmt->execute([":id"=>$userID]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if($_POST["account_type"]!=$result["account_type"]){
+            $type = $_POST["account_type"];
+            $stmt = $db->prepare("UPDATE Users set account_type= :account_type WHERE id = :id");
+            $r = $stmt->execute([":account_type"=>$type,":id"=>$userID]);
+           
+        }
 //fetch/select fresh data in case anything changed
         $stmt = $db->prepare("SELECT email, username from Users WHERE id = :id LIMIT 1");
         $stmt->execute([":id" => get_user_id()]);
@@ -110,24 +121,23 @@ if (isset($_POST["saved"])) {
 ?>
 
     <form method="POST">
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input class="form-control" type="email" name="email" value="<?php safer_echo(get_email()); ?>"/>
-        </div>
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input class="form-control" type="text" maxlength="60" name="username"
-                   value="<?php safer_echo(get_username()); ?>"/>
-        </div>
-        <div class="form-group">
-            <!-- DO NOT PRELOAD PASSWORD-->
-            <label for="pw">Password</label>
-            <input class="form-control" type="password" name="password"/>
-        </div>
-        <div class="form-group">
-            <label for="cpw">Confirm Password</label>
-            <input class="form-control" type="password" name="confirm"/>
-        </div>
-        <input class="form-control" type="submit" name="saved" value="Save Profile"/>
+        <label for="email">Email</label>
+        <input type="email" name="email" value="<?php safer_echo(get_email()); ?>"/>
+        <label for="username">Username</label>
+        <input type="text" maxlength="60" name="username" value="<?php safer_echo(get_username()); ?>"/>
+        <!-- DO NOT PRELOAD PASSWORD-->
+        <label for="pw">Password</label>
+        <input type="password" name="password"/>
+        <label for="cpw">Confirm Password</label>
+        <input type="password" name="confirm"/>
+        <br>
+        <label for="type">Change Account Type:</label>
+        <br>
+        <select name="account_type" id="type">
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+        </select>
+        <br><br>
+        <input type="submit" name="saved" value="Save Profile"/>
     </form>
 <?php require(__DIR__ . "/partials/flash.php");

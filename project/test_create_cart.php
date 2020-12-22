@@ -6,35 +6,38 @@ if (!has_role("Admin")) {
     die(header("Location: login.php"));
 }
 ?>
-    <h3>Create Cart</h3>
+    <h3>Create Item</h3>
     <form method="POST">
-        <label>product_id</label>
-        <input type="int" name="product_id"/>
-	<label>Quantity</label>
-        <input type="number" min="1" name="quantity"/>
-
-
+        <label>Name</label>
+        <input name="name" placeholder="Name"/>
+        <label>Base Rate</label>
+        <input type="number" min="1" name="base_rate"/>
+        <label>Mod Min</label>
+        <input type="number" min="1" name="mod_min"/>
+        <label>Mod Max</label>
+        <input type="number" min="1" name="mod_max"/>
         <input type="submit" name="save" value="Create"/>
     </form>
 
 <?php
 if (isset($_POST["save"])) {
     //TODO add proper validation/checks
-    $product_id = ("SELECT Products.name FROM Products JOIN Cart on F20_Products.id = Cart.product_id WHERE Cart.user_id = :id");
-    $quantity = $_POST["quantity"];
-
+    $name = $_POST["name"];
+    $br = $_POST["base_rate"];
+    $min = $_POST["mod_min"];
+    $max = $_POST["mod_max"];
+    $user = get_user_id();
     $db = getDB();
-    $stmt = $db->prepare("INSERT INTO Cart (product_id, quantity) VALUES(:name, :quantity)");
+    $stmt = $db->prepare("INSERT INTO F20_Incubators (name, base_rate, mod_min, mod_max, user_id) VALUES(:name, :br, :min,:max,:user)");
     $r = $stmt->execute([
-        ":product_id" => $product_id,
-        ":quantity" => $quantity,
-
-        
+        ":name" => $name,
+        ":br" => $br,
+        ":min" => $min,
+        ":max" => $max,
+        ":user" => $user
     ]);
     if ($r) {
-        flash("
-        
-        d successfully with id: " . $db->lastInsertId());
+        flash("Created successfully with id: " . $db->lastInsertId());
     }
     else {
         $e = $stmt->errorInfo();

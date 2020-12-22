@@ -83,6 +83,9 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <input type="submit" class="btn btn-danger" name="delete" value="Delete Cart Item"/>
                         </form>
                     </div>
+<!-- form split was on purpose-->
+                        <input type="submit" class="btn btn-success" name="purchase" value="Purchase"/>
+                        </form>
                 </div>
             </div>
             <?php endforeach;?>
